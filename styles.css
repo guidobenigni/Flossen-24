@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
@@ -11,32 +11,36 @@ body {
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-input {
-    width: 100%;
+input[type="text"],
+input[type="email"],
+input[type="date"] {
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
+    padding: 15px;
+    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -44,5 +48,9 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #218838;
+}
+
+#paypal-button-container {
+    margin-bottom: 20px;
 }
