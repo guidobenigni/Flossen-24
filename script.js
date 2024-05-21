@@ -13,24 +13,26 @@ document.getElementById('registrationForm').addEventListener('submit', function(
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: '0.50'
+                        value: '1000.00'
                     }
                 }]
             });
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                const formData = new FormData();
-                formData.append('name', name);
-                formData.append('email', email);
-                formData.append('address', address);
-                formData.append('passport', passport);
-                formData.append('dob', dob);
-                formData.append('country', country);
-                
                 fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        name: name,
+                        email: email,
+                        address: address,
+                        passport: passport,
+                        dob: dob,
+                        country: country
+                    })
                 }).then(response => response.text()).then(data => {
                     alert('Erfolgreich angemeldet und bezahlt.');
                 }).catch(error => {
