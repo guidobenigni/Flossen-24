@@ -28,23 +28,53 @@
   <script src="https://www.paypal.com/sdk/js?client-id=ARoIT0_T0Y0LxFWvC9Zlnf-lRKc0eQ25KAiLbLT1gT1Mvs9HwQpgefmpyWlezcxgvjr8L_aW6YaCKHTY&currency=EUR"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('registrationForm');
+      const inputs = form.querySelectorAll('input[required]');
+      const paypalContainer = document.getElementById('paypal-button-container');
+
+      // Disable PayPal button initially
+      paypalContainer.style.display = 'none';
+
+      function checkFormValidity() {
+        let allValid = true;
+        inputs.forEach(input => {
+          if (!input.value) {
+            allValid = false;
+          }
+        });
+        return allValid;
+      }
+
+      form.addEventListener('input', function () {
+        if (checkFormValidity()) {
+          // Show PayPal button if form is valid
+          paypalContainer.style.display = 'block';
+        } else {
+          // Hide PayPal button if form is not valid
+          paypalContainer.style.display = 'none';
+        }
+      });
+
       paypal.Buttons({
         createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: '250.00'  // Richtiger Betrag für die Anmeldung
-              }
-            }]
-          });
+          if (checkFormValidity()) {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: '250.00'  // Richtiger Betrag für die Anmeldung
+                }
+              }]
+            });
+          } else {
+            // Prevent PayPal button click if form is not valid
+            return actions.reject();
+          }
         },
         onApprove: function (data, actions) {
           return actions.order.capture().then(function (details) {
-            // Form submission after successful payment
-            const form = document.getElementById('registrationForm');
             const formData = new FormData(form);
-            
-            fetch('URL_OF_YOUR_WEB_APP', {
+
+            fetch('URL_OF_YOUR_WEB_APP', {  // Ersetze durch die Web-App-URL
               method: 'POST',
               body: formData
             }).then(response => {
@@ -63,3 +93,4 @@
   </script>
 </body>
 </html>
+
