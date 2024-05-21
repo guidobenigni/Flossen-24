@@ -23,8 +23,43 @@
     <input type="file" id="kind" name="kind" accept="image/*" required>
     
     <div id="paypal-button-container"></div>
+    <button type="submit" style="display:none;">Anmelden</button>
   </form>
   <script src="https://www.paypal.com/sdk/js?client-id=ARoIT0_T0Y0LxFWvC9Zlnf-lRKc0eQ25KAiLbLT1gT1Mvs9HwQpgefmpyWlezcxgvjr8L_aW6YaCKHTY&currency=EUR"></script>
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      paypal.Buttons({
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '250.00'  // Richtiger Betrag für die Anmeldung
+              }
+            }]
+          });
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function (details) {
+            // Form submission after successful payment
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+            
+            fetch('URL_OF_YOUR_WEB_APP', {
+              method: 'POST',
+              body: formData
+            }).then(response => {
+              if (response.ok) {
+                alert('Zahlung erfolgreich! Anmeldung abgeschlossen.');
+              } else {
+                alert('Fehler bei der Anmeldung. Bitte versuchen Sie es erneut.');
+              }
+            }).catch(error => {
+              alert('Fehler bei der Anmeldung. Bitte versuchen Sie es erneut.');
+            });
+          });
+        }
+      }).render('#paypal-button-container');
+    });
+  </script>
 </body>
 </html>
