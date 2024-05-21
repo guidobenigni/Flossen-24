@@ -20,19 +20,17 @@ document.getElementById('registrationForm').addEventListener('submit', function(
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                fetch(https://script.google.com/macros/library/d/1AZww1jOH0PBOyfi0dTXSQK6HyWwRlm0brN89vhYLqfUsxrKh-EjxyIPa/1, {
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('address', address);
+                formData.append('passport', passport);
+                formData.append('dob', dob);
+                formData.append('country', country);
+                
+                fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        name: name,
-                        email: email,
-                        address: address,
-                        passport: passport,
-                        dob: dob,
-                        country: country
-                    })
+                    body: formData
                 }).then(response => response.text()).then(data => {
                     alert('Erfolgreich angemeldet und bezahlt.');
                 }).catch(error => {
