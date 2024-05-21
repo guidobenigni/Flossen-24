@@ -13,7 +13,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: '0,50'
+                        value: '0.50'
                     }
                 }]
             });
