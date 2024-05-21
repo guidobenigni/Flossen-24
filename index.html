@@ -3,6 +3,78 @@
 <head>
   <title>Anmeldung Vienna Dolphins</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    #paypal-button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      form {
+        padding: 15px;
+      }
+
+      label {
+        margin: 5px 0 3px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="file"] {
+        padding: 8px;
+      }
+
+      #paypal-button-container {
+        margin-top: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Anmeldung Vienna Dolphins</h1>
@@ -74,7 +146,7 @@
           return actions.order.capture().then(function (details) {
             const formData = new FormData(form);
 
-            fetch('URL_OF_YOUR_WEB_APP', {  // Ersetze durch die Web-App-URL
+            fetch('YOUR_WEB_APP_URL', {  // Ersetze durch die Web-App-URL
               method: 'POST',
               body: formData
             }).then(response => {
@@ -93,4 +165,5 @@
   </script>
 </body>
 </html>
+
 
