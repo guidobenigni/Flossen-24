@@ -1,39 +1,31 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vienna Dolphins Anmeldung</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Anmeldung zur Flossenschwimm-Weltmeisterschaft</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Vienna Dolphins Anmeldung</h1>
-        <p>Willkommen zur Anmeldung für den Vienna Dolphins Verein!</p>
-        <p>Anmeldegebühr: 250€</p>
-        <form id="registrationForm">
-            <label for="childName">Name des Kindes:</label>
-            <input type="text" id="childName" name="childName" required>
-            
-            <label for="parentName">Name eines Elternteils:</label>
-            <input type="text" id="parentName" name="parentName" required>
-            
-            <label for="email">E-Mail:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="registrationForm">Foto vom Meldezettel:</label>
-            <input type="file" id="meldezettel" name="meldezettel" accept="image/*" required>
-            
-            <label for="registrationForm">Foto des Kindes:</label>
-            <input type="file" id="kindFoto" name="kindFoto" accept="image/*" required>
-            
-            <div id="paypal-button-container"></div>
-            
-            <button type="submit">Anmelden</button>
-        </form>
-    </div>
-    <script src="https://www.paypal.com/sdk/js?client-id=ARoIT0_T0Y0LxFWvC9Zlnf-lRKc0eQ25KAiLbLT1gT1Mvs9HwQpgefmpyWlezcxgvjr8L_aW6YaCKHTY&currency=EUR"></script>
-    <script src="script.js"></script>
+  <h1>Anmeldung zur Flossenschwimm-Weltmeisterschaft 2024</h1>
+  <form id="registrationForm" enctype="multipart/form-data">
+    <label for="childName">Name des Kindes:</label>
+    <input type="text" id="childName" name="childName" required>
+    
+    <label for="parentName">Name eines Elternteils:</label>
+    <input type="text" id="parentName" name="parentName" required>
+    
+    <label for="email">E-Mail:</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="meldezettel">Foto vom Meldezettel:</label>
+    <input type="file" id="meldezettel" name="meldezettel" accept="image/*" required>
+    
+    <label for="kind">Foto des Kindes:</label>
+    <input type="file" id="kind" name="kind" accept="image/*" required>
+    
+    <div id="paypal-button-container"></div>
+  </form>
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR"></script>
+  <script src="script.js"></script>
 </body>
 </html>
 
