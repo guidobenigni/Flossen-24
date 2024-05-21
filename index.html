@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flossenschwimm-Weltmeisterschaft 2024 - Anmeldung</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Flossenschwimm-Weltmeisterschaft 2024</h1>
+        <p>Willkommen zur Anmeldung für die Flossenschwimm-Weltmeisterschaft in Wien!</p>
+        <p>Anmeldegebühr: 1000€</p>
+        <p>Letzter Anmeldetag: 30. Dezember 2024</p>
+        <form id="registrationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="address">Wohnadresse:</label>
+            <input type="text" id="address" name="address" required>
+            
+            <label for="passport">Reisepassnummer:</label>
+            <input type="text" id="passport" name="passport" required>
+            
+            <label for="dob">Geburtsdatum:</label>
+            <input type="date" id="dob" name="dob" required>
+            
+            <label for="country">Land:</label>
+            <input type="text" id="country" name="country" required>
+            
+            <label for="payment">Zahlung (1000€):</label>
+            <div id="paypal-button-container"></div>
+            
+            <button type="submit">Anmelden</button>
+        </form>
+    </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR"></script>
+    <script src="script.js"></script>
+</body>
+</html>
