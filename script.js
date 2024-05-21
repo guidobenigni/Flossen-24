@@ -20,7 +20,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+                fetch('https://docs.google.com/forms/d/e/1FAIpQLSdq6QP5SwxxLuVOXmDTcqQgzViSwFu2xvhnb3rHK9Yt5Hp9wQ/viewform?usp=sf_link', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
