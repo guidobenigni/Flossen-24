@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return actions.order.create({
         purchase_units: [{
           amount: {
-            value: '1000.00'
+            value: '250.00'  // Richtiger Betrag für die Anmeldung
           }
         }]
       });
