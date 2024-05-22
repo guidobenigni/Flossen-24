@@ -10,8 +10,8 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start;
+    min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -100,5 +100,3 @@ button[type="submit"]:hover {
 #togglePrivacy:hover {
     color: #0056b3;
 }
-
-
