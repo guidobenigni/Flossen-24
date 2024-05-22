@@ -14,6 +14,7 @@ body, html {
     min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+    padding-top: 50px; /* Fügt oben zusätzlichen Abstand hinzu */
 }
 
 h1 {
@@ -30,6 +31,7 @@ form {
     max-width: 400px;
     width: 100%;
     box-sizing: border-box;
+    margin-top: 20px; /* Fügt zwischen dem Titel und dem Formular zusätzlichen Abstand hinzu */
 }
 
 label {
@@ -100,3 +102,4 @@ button[type="submit"]:hover {
 #togglePrivacy:hover {
     color: #0056b3;
 }
+
