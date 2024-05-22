@@ -8,18 +8,9 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
-    box-sizing: border-box;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius
+.container {
+    width: 100%;
 
 
