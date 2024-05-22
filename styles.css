@@ -3,7 +3,7 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e9ecef;
 }
 
 .container {
@@ -17,13 +17,13 @@ body, html {
 }
 
 h1 {
-    color: #333;
+    color: #495057;
     margin-bottom: 20px;
     text-align: center;
 }
 
 form {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@ form {
 label {
     display: block;
     margin: 10px 0 5px;
-    color: #333;
+    color: #495057;
 }
 
 input[type="text"],
@@ -45,7 +45,7 @@ select {
     width: 100%;
     padding: 12px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ced4da;
     border-radius: 4px;
     box-sizing: border-box;
 }
@@ -77,7 +77,7 @@ button[type="submit"]:hover {
 
 #privacyPolicy {
     display: none;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -100,4 +100,5 @@ button[type="submit"]:hover {
 #togglePrivacy:hover {
     color: #0056b3;
 }
+
 
