@@ -1,5 +1,5 @@
 // Ursprüngliches JavaScript
-const scriptURL = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbztdCqq-lWyJa_eB9eHktr2eTkuf_3wT0Ae188IvhHMN160hQSlN7rpGQPznEMebfHoCw/exec/exec'; // Replace with your deployed script URL
+const scriptURL = 'https://script.google.com/macros/s/AKfycbztdCqq-lWyJa_eB9eHktr2eTkuf_3wT0Ae188IvhHMN160hQSlN7rpGQPznEMebfHoCw/exec'; // Replace with your deployed script URL
 const form = document.forms['registrationForm'];
     
 form.addEventListener('submit', e => {
