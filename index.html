@@ -1,112 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Anmeldung Vienna Dolphins</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-color: #f0f0f0;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      color: #333;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    #paypal-button-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      margin-right: 10px;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      form {
-        padding: 15px;
-      }
-
-      label {
-        margin: 5px 0 3px;
-      }
-
-      input[type="text"],
-      input[type="email"],
-      input[type="file"] {
-        padding: 10px;
-      }
-
-      #paypal-button-container {
-        margin-top: 15px;
-      }
-    }
-  </style>
+  <title>Anmeldung Vienna Dolphins</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Anmeldung Vienna Dolphins</h1>
   <form id="registrationForm" enctype="multipart/form-data" method="post" action="https://script.google.com/macros/s/AKfycbzXLN59fHOW46nSOYPnZYXZlcdP7Pn01X2xad28xiYvViO6EpyC7NGl_B1V7_gw7fmHUg/exec">
-    <label for="childName">Name des Kindes:</label>
-    <input type="text" id="childName" name="childName" required>
-    
-    <label for="parentName">Name eines Elternteils:</label>
-    <input type="text" id="parentName" name="parentName" required>
-    
+    <label for="lastName">Familienname:</label>
+    <input type="text" id="lastName" name="lastName" required>
+
+    <label for="firstName">Vorname:</label>
+    <input type="text" id="firstName" name="firstName" required>
+
+    <label for="gender">Geschlecht:</label>
+    <select id="gender" name="gender">
+      <option value="male">Männlich</option>
+      <option value="female">Weiblich</option>
+      <option value="other">Divers</option>
+    </select>
+
+    <label for="birthdate">Geburtsdatum:</label>
+    <input type="date" id="birthdate" name="birthdate" required>
+
+    <label for="birthplace">Geburtsort:</label>
+    <input type="text" id="birthplace" name="birthplace" required>
+
+    <label for="nationality">Staatsangehörigkeit:</label>
+    <input type="text" id="nationality" name="nationality" required>
+
+    <label for="streetAddress">Adresse mit Straße:</label>
+    <input type="text" id="streetAddress" name="streetAddress" required>
+
+    <label for="zipCode">Postleitzahl:</label>
+    <input type="text" id="zipCode" name="zipCode" required>
+
+    <label for="city">Ort:</label>
+    <input type="text" id="city" name="city" required>
+
     <label for="email">E-Mail:</label>
     <input type="email" id="email" name="email" required>
-    
-    <label for="meldezettel">Foto vom Meldezettel:</label>
-    <input type="file" id="meldezettel" name="meldezettel" accept="image/*" required>
-    
-    <label for="kind">Foto des Kindes:</label>
-    <input type="file" id="kind" name="kind" accept="image/*" required>
 
     <div class="checkbox-container">
       <input type="checkbox" id="usePaypal" name="usePaypal">
@@ -117,41 +52,7 @@
     <button type="submit">Anmelden</button>
   </form>
   <script src="https://www.paypal.com/sdk/js?client-id=ARoIT0_T0Y0LxFWvC9Zlnf-lRKc0eQ25KAiLbLT1gT1Mvs9HwQpgefmpyWlezcxgvjr8L_aW6YaCKHTY&currency=EUR"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.getElementById('registrationForm');
-      const paypalCheckbox = document.getElementById('usePaypal');
-      const paypalContainer = document.getElementById('paypal-button-container');
-      const submitButton = form.querySelector('button[type="submit"]');
-
-      paypalCheckbox.addEventListener('change', function () {
-        if (paypalCheckbox.checked) {
-          paypalContainer.style.display = 'block';
-          submitButton.style.display = 'none';
-        } else {
-          paypalContainer.style.display = 'none';
-          submitButton.style.display = 'block';
-        }
-      });
-
-      paypal.Buttons({
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: '250.00'  // Richtiger Betrag für die Anmeldung
-              }
-            }]
-          });
-        },
-        onApprove: function (data, actions) {
-          return actions.order.capture().then(function (details) {
-            form.submit();
-          });
-        }
-      }).render('#paypal-button-container');
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
 
