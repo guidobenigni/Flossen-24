@@ -1,33 +1,32 @@
-document.addEventListener('DOMContentLoaded', function () {
-  paypal.Buttons({
-    createOrder: function (data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: '250.00'  // Richtiger Betrag für die Anmeldung
-          }
-        }]
-      });
-    },
-    onApprove: function (data, actions) {
-      return actions.order.capture().then(function (details) {
-        const formData = new FormData(document.getElementById('registrationForm'));
-
-        // Send form data to Google Form after successful payment
-        fetch('URL_OF_YOUR_GOOGLE_FORM', {
-          method: 'POST',
-          body: formData
-        }).then(response => {
-          if (response.ok) {
-            alert('Zahlung erfolgreich! Anmeldung abgeschlossen.');
-          } else {
-            alert('Fehler bei der Anmeldung. Bitte versuchen Sie es erneut.');
-          }
-        }).catch(error => {
-          alert('Fehler bei der Anmeldung. Bitte versuchen Sie es erneut.');
-        });
-      });
-    }
-  }).render('#paypal-button-container');
+// Ursprüngliches JavaScript
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzXLN59fHOW46nSOYPnZYXZlcdP7Pn01X2xad28xiYvViO6EpyC7NGl_B1V7_gw7fmHUg/exec';
+const form = document.forms['registrationForm'];
+    
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => alert('Anmeldung erfolgreich!'))
+        .catch(error => console.error('Fehler!', error.message));
 });
+
+// Hinzugefügtes JavaScript
+document.getElementById('usePaypal').addEventListener('change', function() {
+    var paypalContainer = document.getElementById('paypal-button-container');
+    if (this.checked) {
+        paypalContainer.style.display = 'block';
+        paypal.Buttons().render('#paypal-button-container');
+    } else {
+        paypalContainer.style.display = 'none';
+    }
+});
+
+document.getElementById('togglePrivacy').addEventListener('click', function() {
+    var privacyPolicy = document.getElementById('privacyPolicy');
+    if (privacyPolicy.style.display === 'none' || privacyPolicy.style.display === '') {
+        privacyPolicy.style.display = 'block';
+    } else {
+        privacyPolicy.style.display = 'none';
+    }
+});
+
 
