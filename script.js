@@ -22,62 +22,76 @@ async function uploadFile(event) {
     }
   }
 
-  // Verkleinern des Bildes
-  const resizedPhotoBlob = await resizeImage(photoFile, 425, 566, 1 * 1024 * 1024); // Maximal 1 MB
+  try {
+    // Verkleinern des Bildes
+    const resizedPhotoBlob = await resizeImage(photoFile, 425, 566, 1 * 1024 * 1024); // Maximal 1 MB
 
-  // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
-  const totalSize = registrationFormFile.size + resizedPhotoBlob.size;
-  if (totalSize > 1048576) {
-    alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
-    return;
-  }
+    // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
+    const totalSize = registrationFormFile.size + resizedPhotoBlob.size;
+    if (totalSize > 1048576) {
+      alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
+      return;
+    }
 
-  const reader1 = new FileReader();
-  reader1.readAsDataURL(registrationFormFile);
+    const reader1 = new FileReader();
+    reader1.readAsDataURL(registrationFormFile);
 
-  reader1.onload = async function() {
-    const registrationFormBase64 = reader1.result.split(',')[1];
+    reader1.onload = async function() {
+      const registrationFormBase64 = reader1.result.split(',')[1];
 
-    const reader2 = new FileReader();
-    reader2.readAsDataURL(resizedPhotoBlob);
+      const reader2 = new FileReader();
+      reader2.readAsDataURL(resizedPhotoBlob);
 
-    reader2.onload = async function() {
-      const resizedPhotoBase64 = reader2.result.split(',')[1];
+      reader2.onload = async function() {
+        const resizedPhotoBase64 = reader2.result.split(',')[1];
 
-      const data = {
-        firstName: firstName,
-        lastName: lastName,
-        registrationForm: registrationFormBase64,
-        registrationFormMimeType: registrationFormFile.type,
-        photo: resizedPhotoBase64,
-        photoMimeType: 'image/jpeg' // Wir verwenden JPEG als Standard für die verkleinerten Bilder
-      };
+        const data = {
+          firstName: firstName,
+          lastName: lastName,
+          registrationForm: registrationFormBase64,
+          registrationFormMimeType: registrationFormFile.type,
+          photo: resizedPhotoBase64,
+          photoMimeType: 'image/jpeg' // Wir verwenden JPEG als Standard für die verkleinerten Bilder
+        };
 
-      try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
+        try {
+          const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
 
-        const result = await response.json();
-        if (result.status === 'success') {
-          document.getElementById('output').innerHTML = `
-            Dateien hochgeladen: <br>
-            <a href="${result.registrationFileUrl}">Meldezettel</a><br>
-            <a href="${result.photoFileUrl}">Passfoto</a>
-          `;
-        } else {
-          alert('Fehler: ' + result.message);
+          const result = await response.json();
+          if (result.status === 'success') {
+            document.getElementById('output').innerHTML = `
+              Dateien hochgeladen: <br>
+              <a href="${result.registrationFileUrl}">Meldezettel</a><br>
+              <a href="${result.photoFileUrl}">Passfoto</a>
+            `;
+          } else {
+            alert('Fehler: ' + result.message);
+          }
+        } catch (error) {
+          console.error('Fehler bei der Anfrage:', error);
+          alert('Fehler bei der Anfrage: ' + error.toString());
         }
-      } catch (error) {
-        alert('Fehler: ' + error.toString());
-      }
+      };
+      reader2.onerror = function(error) {
+        console.error('Fehler beim Lesen des Fotos:', error);
+        alert('Fehler beim Lesen des Fotos: ' + error.toString());
+      };
+      reader2.readAsDataURL(resizedPhotoBlob);
     };
-    reader2.readAsDataURL(resizedPhotoBlob);
-  };
+    reader1.onerror = function(error) {
+      console.error('Fehler beim Lesen des Meldezettels:', error);
+      alert('Fehler beim Lesen des Meldezettels: ' + error.toString());
+    };
+  } catch (error) {
+    console.error('Fehler beim Verkleinern des Bildes:', error);
+    alert('Fehler beim Verkleinern des Bildes: ' + error.toString());
+  }
 }
 
 function resizeImage(file, maxWidth, maxHeight, maxSize) {
@@ -119,7 +133,10 @@ function resizeImage(file, maxWidth, maxHeight, maxSize) {
         }
       }, 'image/jpeg', quality);
     };
-    img.onerror = reject;
+    img.onerror = function(error) {
+      console.error('Fehler beim Laden des Bildes:', error);
+      reject('Fehler beim Laden des Bildes: ' + error.toString());
+    };
   });
 }
 
