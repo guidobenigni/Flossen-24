@@ -51,7 +51,7 @@ async function uploadFile(event) {
         };
 
         try {
-          const response = await fetch('https://script.google.com/macros/s/AKfycbxp98RxstHZqeTTT5Fr1MjQey8olKCgLJsl_6jxEtsq8T1bEu516KQnjRzHckRxOCUo/exec', {
+          const response = await fetch('https://script.google.com/macros/s/AKfycby4TtHbi55iOeqMypHxtHkEtRaGyexT4I4irtfBT3d3AOH0AvClYqsw-QmGvBjTF-Ao/exec', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
