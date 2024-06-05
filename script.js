@@ -1,3 +1,18 @@
+// Firebase-Konfiguration
+const firebaseConfig = {
+  apiKey: "AIzaSyDMNctAxovHfw2PMamWttO5qdhfOfg3YwY",
+  authDomain: "schwimmen-5d573.firebaseapp.com",
+  projectId: "schwimmen-5d573",
+  storageBucket: "schwimmen-5d573.appspot.com",
+  messagingSenderId: "396100597513",
+  appId: "1:396100597513:web:63e922cb1e0590b547c5d8",
+  measurementId: "G-12S7DJ7WCC"
+};
+
+// Firebase initialisieren
+firebase.initializeApp(firebaseConfig);
+const storage = firebase.storage();
+
 async function uploadFile(event) {
   event.preventDefault();
   const form = document.getElementById('myForm');
@@ -22,136 +37,30 @@ async function uploadFile(event) {
     }
   }
 
-  try {
-    // Verkleinern des Bildes
-    const resizedPhotoBlob = await resizeImage(photoFile, 425, 566, 1 * 1024 * 1024); // Maximal 1 MB
-
-    // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
-    const totalSize = registrationFormFile.size + resizedPhotoBlob.size;
-    if (totalSize > 1048576) {
-      alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
-      return;
-    }
-
-    const reader1 = new FileReader();
-    reader1.onload = async function() {
-      const registrationFormBase64 = reader1.result.split(',')[1];
-
-      const reader2 = new FileReader();
-      reader2.onload = async function() {
-        const resizedPhotoBase64 = reader2.result.split(',')[1];
-
-        const data = {
-          firstName: firstName,
-          lastName: lastName,
-          registrationForm: registrationFormBase64,
-          registrationFormMimeType: registrationFormFile.type,
-          photo: resizedPhotoBase64,
-          photoMimeType: 'image/jpeg' // Wir verwenden JPEG als Standard für die verkleinerten Bilder
-        };
-
-        try {
-          const response = await fetch('https://script.google.com/macros/s/AKfycby4TtHbi55iOeqMypHxtHkEtRaGyexT4I4irtfBT3d3AOH0AvClYqsw-QmGvBjTF-Ao/exec', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const result = await response.json();
-          if (result.status === 'success') {
-            document.getElementById('output').innerHTML = `
-              Dateien hochgeladen: <br>
-              <a href="${result.registrationFileUrl}">Meldezettel</a><br>
-              <a href="${result.photoFileUrl}">Passfoto</a>
-            `;
-          } else {
-            alert('Fehler: ' + result.message);
-          }
-        } catch (error) {
-          console.error('Fehler bei der Anfrage:', error);
-          alert('Fehler bei der Anfrage: ' + error.toString());
-        }
-      };
-      reader2.onerror = function(error) {
-        console.error('Fehler beim Lesen des Fotos:', error);
-        alert('Fehler beim Lesen des Fotos: ' + error.toString());
-      };
-      reader2.readAsDataURL(resizedPhotoBlob);
-    };
-    reader1.onerror = function(error) {
-      console.error('Fehler beim Lesen des Meldezettels:', error);
-      alert('Fehler beim Lesen des Meldezettels: ' + error.toString());
-    };
-    reader1.readAsDataURL(registrationFormFile);
-  } catch (error) {
-    console.error('Fehler beim Verkleinern des Bildes:', error);
-    alert('Fehler beim Verkleinern des Bildes: ' + error.toString());
+  // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
+  const totalSize = registrationFormFile.size + photoFile.size;
+  if (totalSize > 1048576) {
+    alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
+    return;
   }
-}
 
-function resizeImage(file, maxWidth, maxHeight, maxSize) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      let width = img.width;
-      let height = img.height;
+  try {
+    const registrationFormRef = storage.ref().child(`${firstName}_${lastName}_Meldezettel.pdf`);
+    const photoRef = storage.ref().child(`${firstName}_${lastName}_Passfoto.jpg`);
 
-      if (width > maxWidth || height > maxHeight) {
-        if (width / height > maxWidth / maxHeight) {
-          height = Math.round(height * maxWidth / width);
-          width = maxWidth;
-        } else {
-          width = Math.round(width * maxHeight / height);
-          height = maxHeight;
-        }
-      }
+    const registrationFormSnapshot = await registrationFormRef.put(registrationFormFile);
+    const photoSnapshot = await photoRef.put(photoFile);
 
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
+    const registrationFormUrl = await registrationFormSnapshot.ref.getDownloadURL();
+    const photoUrl = await photoSnapshot.ref.getDownloadURL();
 
-      let quality = 0.9; // Start quality
-      canvas.toBlob(blob => {
-        if (blob.size > maxSize) {
-          quality -= 0.1;
-          if (quality < 0.1) {
-            reject(new Error("Image cannot be resized below 1 MB"));
-            return;
-          }
-          resizeImageBlob(canvas, quality, resolve, reject, maxSize);
-        } else {
-          resolve(blob);
-        }
-      }, 'image/jpeg', quality);
-    };
-    img.onerror = function(error) {
-      console.error('Fehler beim Laden des Bildes:', error);
-      reject('Fehler beim Laden des Bildes: ' + error.toString());
-    };
-  });
-}
-
-function resizeImageBlob(canvas, quality, resolve, reject, maxSize) {
-  canvas.toBlob(blob => {
-    if (blob.size > maxSize) {
-      quality -= 0.1;
-      if (quality < 0.1) {
-        reject(new Error("Image cannot be resized below 1 MB"));
-        return;
-      }
-      resizeImageBlob(canvas, quality, resolve, reject, maxSize);
-    } else {
-      resolve(blob);
-    }
-  }, 'image/jpeg', quality);
+    document.getElementById('output').innerHTML = `
+      Dateien hochgeladen: <br>
+      <a href="${registrationFormUrl}">Meldezettel</a><br>
+      <a href="${photoUrl}">Passfoto</a>
+    `;
+  } catch (error) {
+    console.error('Fehler beim Upload:', error);
+    alert('Fehler beim Upload: ' + error.toString());
+  }
 }
