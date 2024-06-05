@@ -10,8 +10,8 @@ const firebaseConfig = {
 };
 
 // Firebase initialisieren
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
+const app = firebase.initializeApp(firebaseConfig);
+const storage = firebase.storage(app);
 
 async function uploadFile(event) {
   event.preventDefault();
@@ -64,3 +64,4 @@ async function uploadFile(event) {
     alert('Fehler beim Upload: ' + error.toString());
   }
 }
+
