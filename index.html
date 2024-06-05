@@ -3,11 +3,12 @@
   <head>
     <base target="_top">
     <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <div class="container">
       <h1>Anmeldung für Schwimmwettkämpfe</h1>
-      <form id="myForm">
+      <form id="myForm" onsubmit="uploadFile(event)">
         <label for="firstName">Vorname:</label>
         <input type="text" id="firstName" name="firstName" required>
         
@@ -22,7 +23,7 @@
         
         <p class="small-text">Bitte beachten Sie die <a href="https://data.fina.org/Content/docs/Fina_Accreditation_Photo_Requirements.pdf" target="_blank">FINA Foto Richtlinien</a>.</p>
         
-        <button type="button" onclick="uploadFile()">Upload</button>
+        <button type="submit">Upload</button>
       </form>
       <div id="output"></div>
     </div>
