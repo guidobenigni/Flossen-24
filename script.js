@@ -8,13 +8,6 @@ async function uploadFile(event) {
   const registrationFormFile = formData.get('registrationForm');
   let photoFile = formData.get('photo');
 
-  // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
-  const totalSize = registrationFormFile.size + photoFile.size;
-  if (totalSize > 1048576) {
-    alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
-    return;
-  }
-
   // HEIC-Bilder in JPEG umwandeln
   if (photoFile.type === 'image/heic') {
     try {
@@ -30,46 +23,60 @@ async function uploadFile(event) {
   }
 
   // Verkleinern des Bildes
-  const resizedPhoto = await resizeImage(photoFile, 425, 566, 1 * 1024 * 1024); // Maximal 1 MB
+  const resizedPhotoBlob = await resizeImage(photoFile, 425, 566, 1 * 1024 * 1024); // Maximal 1 MB
+
+  // Prüfen, ob die Gesamtgröße der Dateien 1 MB überschreitet
+  const totalSize = registrationFormFile.size + resizedPhotoBlob.size;
+  if (totalSize > 1048576) {
+    alert("Die Gesamtgröße der Dateien darf nicht größer als 1 MB sein.");
+    return;
+  }
 
   const reader1 = new FileReader();
   reader1.readAsDataURL(registrationFormFile);
 
   reader1.onload = async function() {
     const registrationFormBase64 = reader1.result.split(',')[1];
-    const resizedPhotoBase64 = resizedPhoto.split(',')[1];
 
-    const data = {
-      firstName: firstName,
-      lastName: lastName,
-      registrationForm: registrationFormBase64,
-      registrationFormMimeType: registrationFormFile.type,
-      photo: resizedPhotoBase64,
-      photoMimeType: 'image/jpeg' // Wir verwenden JPEG als Standard für die verkleinerten Bilder
-    };
+    const reader2 = new FileReader();
+    reader2.readAsDataURL(resizedPhotoBlob);
 
-    try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+    reader2.onload = async function() {
+      const resizedPhotoBase64 = reader2.result.split(',')[1];
 
-      const result = await response.json();
-      if (result.status === 'success') {
-        document.getElementById('output').innerHTML = `
-          Dateien hochgeladen: <br>
-          <a href="${result.registrationFileUrl}">Meldezettel</a><br>
-          <a href="${result.photoFileUrl}">Passfoto</a>
-        `;
-      } else {
-        alert('Fehler: ' + result.message);
+      const data = {
+        firstName: firstName,
+        lastName: lastName,
+        registrationForm: registrationFormBase64,
+        registrationFormMimeType: registrationFormFile.type,
+        photo: resizedPhotoBase64,
+        photoMimeType: 'image/jpeg' // Wir verwenden JPEG als Standard für die verkleinerten Bilder
+      };
+
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+          document.getElementById('output').innerHTML = `
+            Dateien hochgeladen: <br>
+            <a href="${result.registrationFileUrl}">Meldezettel</a><br>
+            <a href="${result.photoFileUrl}">Passfoto</a>
+          `;
+        } else {
+          alert('Fehler: ' + result.message);
+        }
+      } catch (error) {
+        alert('Fehler: ' + error.toString());
       }
-    } catch (error) {
-      alert('Fehler: ' + error.toString());
-    }
+    };
+    reader2.readAsDataURL(resizedPhotoBlob);
   };
 }
 
@@ -106,9 +113,9 @@ function resizeImage(file, maxWidth, maxHeight, maxSize) {
             reject(new Error("Image cannot be resized below 1 MB"));
             return;
           }
-          resizeImageBlob(canvas, quality, resolve, reject);
+          resizeImageBlob(canvas, quality, resolve, reject, maxSize);
         } else {
-          resolve(URL.createObjectURL(blob));
+          resolve(blob);
         }
       }, 'image/jpeg', quality);
     };
@@ -116,7 +123,7 @@ function resizeImage(file, maxWidth, maxHeight, maxSize) {
   });
 }
 
-function resizeImageBlob(canvas, quality, resolve, reject) {
+function resizeImageBlob(canvas, quality, resolve, reject, maxSize) {
   canvas.toBlob(blob => {
     if (blob.size > maxSize) {
       quality -= 0.1;
@@ -124,10 +131,9 @@ function resizeImageBlob(canvas, quality, resolve, reject) {
         reject(new Error("Image cannot be resized below 1 MB"));
         return;
       }
-      resizeImageBlob(canvas, quality, resolve, reject);
+      resizeImageBlob(canvas, quality, resolve, reject, maxSize);
     } else {
-      resolve(URL.createObjectURL(blob));
+      resolve(blob);
     }
   }, 'image/jpeg', quality);
 }
-
