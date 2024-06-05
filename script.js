@@ -34,14 +34,10 @@ async function uploadFile(event) {
     }
 
     const reader1 = new FileReader();
-    reader1.readAsDataURL(registrationFormFile);
-
     reader1.onload = async function() {
       const registrationFormBase64 = reader1.result.split(',')[1];
 
       const reader2 = new FileReader();
-      reader2.readAsDataURL(resizedPhotoBlob);
-
       reader2.onload = async function() {
         const resizedPhotoBase64 = reader2.result.split(',')[1];
 
@@ -55,7 +51,7 @@ async function uploadFile(event) {
         };
 
         try {
-          const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
+          const response = await fetch('https://script.google.com/macros/s/AKfycbwkWjcoWHgfJE9SkQHCASVO3Fk9JTZhp-O0V7mKg05yPqrm-nEw_mB3n5kliiNjMRgR/exec', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -88,6 +84,7 @@ async function uploadFile(event) {
       console.error('Fehler beim Lesen des Meldezettels:', error);
       alert('Fehler beim Lesen des Meldezettels: ' + error.toString());
     };
+    reader1.readAsDataURL(registrationFormFile);
   } catch (error) {
     console.error('Fehler beim Verkleinern des Bildes:', error);
     alert('Fehler beim Verkleinern des Bildes: ' + error.toString());
