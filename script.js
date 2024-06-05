@@ -51,13 +51,17 @@ async function uploadFile(event) {
         };
 
         try {
-          const response = await fetch('https://script.google.com/macros/s/AKfycbwkWjcoWHgfJE9SkQHCASVO3Fk9JTZhp-O0V7mKg05yPqrm-nEw_mB3n5kliiNjMRgR/exec', {
+          const response = await fetch('https://script.google.com/macros/s/AKfycbxp98RxstHZqeTTT5Fr1MjQey8olKCgLJsl_6jxEtsq8T1bEu516KQnjRzHckRxOCUo/exec', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
           });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
 
           const result = await response.json();
           if (result.status === 'success') {
