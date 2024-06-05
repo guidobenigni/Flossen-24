@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/heic2any"></script>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Anmeldung für Schwimmwettkämpfe</h1>
-      <form id="myForm" onsubmit="uploadFile(event)">
-        <label for="firstName">Vorname:</label>
-        <input type="text" id="firstName" name="firstName" required>
-        
-        <label for="lastName">Nachname:</label>
-        <input type="text" id="lastName" name="lastName" required>
-        
-        <label for="registrationForm">Meldezettel hochladen (max. 1 MB):</label>
-        <input type="file" id="registrationForm" name="registrationForm" accept=".pdf" required>
-        
-        <label for="photo">Passfoto hochladen (max. 1 MB, min. 425x566 Pixel):</label>
-        <input type="file" id="photo" name="photo" accept="image/*" required>
-        
-        <p class="small-text">Bitte beachten Sie die <a href="https://data.fina.org/Content/docs/Fina_Accreditation_Photo_Requirements.pdf" target="_blank">FINA Foto Richtlinien</a>.</p>
-        
-        <button type="submit">Upload</button>
-      </form>
-      <div id="output"></div>
-    </div>
-    
-    <script src="script.js"></script>
-  </body>
+<head>
+  <base target="_top">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+  <script src="https://unpkg.com/heic2any"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Anmeldung für Schwimmwettkämpfe</h1>
+    <form id="myForm" onsubmit="uploadFile(event)">
+      <label for="firstName">Vorname:</label>
+      <input type="text" id="firstName" name="firstName" required>
+      
+      <label for="lastName">Nachname:</label>
+      <input type="text" id="lastName" name="lastName" required>
+      
+      <label for="registrationForm">Meldezettel hochladen (max. 1 MB):</label>
+      <input type="file" id="registrationForm" name="registrationForm" accept=".pdf" required>
+      
+      <label for="photo">Passfoto hochladen (max. 1 MB, min. 425x566 Pixel):</label>
+      <input type="file" id="photo" name="photo" accept="image/*" required>
+      
+      <p class="small-text">Bitte beachten Sie die <a href="https://data.fina.org/Content/docs/Fina_Accreditation_Photo_Requirements.pdf" target="_blank">FINA Foto Richtlinien</a>.</p>
+      
+      <button type="submit">Upload</button>
+    </form>
+    <div id="output"></div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
 </html>
