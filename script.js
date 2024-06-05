@@ -40,7 +40,7 @@ async function uploadFile(event) {
           };
 
           try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyGjlpGBavjLc-oRg0Fg-Af5fYcPxf85oP7R7CmHzpTi3vtYGIlTHLsWyuViX3WPA9P/exec', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzU41aN7s9cLPfoEZ5Il01Tv6dg3bSPaXiIxrEhNdIUz9S7-QUr33YosWeXRs9qWaFV/exec', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +67,3 @@ async function uploadFile(event) {
   };
   photo.src = URL.createObjectURL(photoFile);
 }
-
-
-
-
